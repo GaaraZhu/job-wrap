@@ -2,34 +2,59 @@
 
 Analyze your git commit history across workspace directories to understand your contributions — then generate AI-ready context for updating your CV or drafting a farewell letter.
 
-## Quick start
+## Workflow
+
+**Step 1 — Configure**
+
+Edit `config.yaml` with your workspace directories, work email, and any supplementary context (standup notes, personal achievements, etc.).
+
+**Step 2 — Generate output files**
 
 ```bash
-python analyze.py ~/workspace ~/work --email work@company.com
+python3 analyze.py
 ```
 
-This writes two files:
+This writes to `output/`:
 - `cv-context.md` — commit history + prompt for CV bullet points
-- `farewell-context.md` — commit history + prompt for a farewell message
+- `farewell-context.md` — commit history + prompt for a farewell letter
 
-Paste either file into Claude (or any LLM) to generate the output.
+**Step 3 — Open an AI coding assistant in this folder**
+
+```bash
+claude  # Claude Code
+# or
+opencode
+```
+
+Then ask it to action the file, for example:
+
+```
+Read output/cv-context.md and do the task described at the bottom.
+```
+
+The AI gets the full commit history, supplementary context, and instructions all in one file. Direct it to write results wherever you need — your CV file, a new draft, etc.
+
+## Setup
+
+```bash
+mise install       # installs Python 3.12
+mise run install   # installs pyyaml
+```
 
 ## Options
 
 ```
-python analyze.py [dirs...] [options]
+python3 analyze.py [dirs...] [options]
 
   --config PATH       Config file (default: config.yaml if present)
   --email EMAIL       Additional author email (repeatable)
   --note TEXT         Extra context to include in output (repeatable)
   --mode MODE         cv | farewell | all | raw  (default: all)
   --exclude PATTERN   Extra regex pattern for files to exclude from line counts
-  --output-dir DIR    Where to write output files (default: current directory)
+  --output-dir DIR    Where to write output files (default: output/)
 ```
 
 ## Config file
-
-Copy `config.yaml` and fill in your details — avoids passing flags every time.
 
 ```yaml
 workspace_dirs:
@@ -53,8 +78,3 @@ Add project-specific patterns via `--exclude` or `exclude_patterns` in config.
 ## Customizing prompts
 
 Edit `prompts/cv.md` or `prompts/farewell.md` to tune the AI instructions for your needs.
-
-## Requirements
-
-- Python 3.8+
-- `pyyaml` for config file support: `pip install pyyaml`
