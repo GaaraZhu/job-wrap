@@ -269,6 +269,8 @@ def main():
     config = {}
     if args.config:
         config = load_config(args.config)
+    elif Path("config.local.yaml").exists():
+        config = load_config("config.local.yaml")
     elif Path("config.yaml").exists():
         config = load_config("config.yaml")
 

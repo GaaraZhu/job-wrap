@@ -6,7 +6,11 @@ Analyze your git commit history across workspace directories to understand your 
 
 **Step 1 — Configure**
 
-Edit `config.yaml` with your workspace directories, work email, and any supplementary context (standup notes, personal achievements, etc.).
+Copy `config.yaml` to `config.local.yaml` and fill in your details. The local file is gitignored so your personal config stays off the repo.
+
+```bash
+cp config.yaml config.local.yaml
+```
 
 **Step 2 — Generate output files**
 
@@ -54,7 +58,7 @@ python3 analyze.py [dirs...] [options]
   --output-dir DIR    Where to write output files (default: output/)
 ```
 
-## Config file
+## Config file (`config.local.yaml`)
 
 ```yaml
 workspace_dirs:

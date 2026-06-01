@@ -1,13 +1,15 @@
-# job-wrap configuration
-# All fields are optional — everything can also be passed via CLI flags.
+# job-wrap configuration template
+# Copy this file to config.local.yaml and fill in your personal details.
+# config.local.yaml is gitignored — your personal config stays local.
 
 # Workspace directories to scan for git repos
 workspace_dirs:
-  - ~/workspace
+  # - ~/workspace
+  # - ~/work
 
 # Additional author emails beyond what git config detects per repo
 extra_emails:
-  - sec.gary@gmail.com
+  # - work@company.com
 
 # Freeform notes added to the "Additional Context" section of output
 notes:
