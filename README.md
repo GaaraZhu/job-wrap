@@ -4,7 +4,7 @@ Analyze your git commit history across workspace directories to understand your 
 
 ## Setup
 
-Requires Python 3.12+ (no external dependencies).
+Requires Python 3.11+ (no external dependencies).
 
 Copy `config.example.toml` to `config.local.toml` and fill in your details. The local file is gitignored so your personal config stays off the repo.
 
@@ -49,15 +49,16 @@ python analyze.py
 ```
 
 This writes to `output/`:
-- `cv-context.md` — commit history + prompt for CV bullet points
-- `farewell-context.md` — commit history + prompt for a farewell letter
+- `analysis.md` — full commit history and stats (always written)
+- `cv-context.md` — pointer to analysis + prompt for CV bullet points
+- `farewell-context.md` — pointer to analysis + prompt for a farewell letter
 
 ### Options
 
 ```
 python3 analyze.py [dirs...] [options]
 
-  --config PATH              Config file (default: config.yaml if present)
+  --config PATH              Config file (default: config.local.toml if present)
   --email EMAIL              Additional author email (repeatable)
   --note TEXT                Extra context to include in output (repeatable)
   --mode MODE                cv | farewell | all | raw  (default: all)
@@ -112,7 +113,7 @@ Then point it at an output file:
 Read output/cv-context.md and do the task described at the bottom.
 ```
 
-The AI gets the full commit history, supplementary context, and instructions all in one file. Direct it to write results wherever you need — your CV file, a new draft, etc.
+The context file points the AI to `analysis.md` and any supplementary files, then gives it the task. Direct it to write results wherever you need — your CV file, a new draft, etc.
 
 ### Customizing prompts
 
