@@ -99,15 +99,7 @@ Excluded projects won't appear in the output or contribute to statistics.
 
 ## AI prompt usage
 
-Open an AI coding assistant in this folder:
-
-```bash
-claude  # Claude Code
-# or
-opencode
-```
-
-Then point it at an output file:
+Open any AI coding assistant that can read files (Claude Code, Cursor, Copilot, opencode, etc.) in this folder, then point it at an output file:
 
 ```
 Read output/cv-context.md and do the task described at the bottom.
