@@ -44,12 +44,13 @@ This writes to `output/`:
 ```
 python3 analyze.py [dirs...] [options]
 
-  --config PATH       Config file (default: config.yaml if present)
-  --email EMAIL       Additional author email (repeatable)
-  --note TEXT         Extra context to include in output (repeatable)
-  --mode MODE         cv | farewell | all | raw  (default: all)
-  --exclude PATTERN   Extra regex pattern for files to exclude from line counts
-  --output-dir DIR    Where to write output files (default: output/)
+  --config PATH              Config file (default: config.yaml if present)
+  --email EMAIL              Additional author email (repeatable)
+  --note TEXT                Extra context to include in output (repeatable)
+  --mode MODE                cv | farewell | all | raw  (default: all)
+  --exclude PATTERN          Extra regex pattern for files to exclude from line counts
+  --exclude-project PROJECT  Project name to exclude from analysis (repeatable)
+  --output-dir DIR           Where to write output files (default: output/)
 ```
 
 ### What gets excluded from line counts
@@ -65,6 +66,26 @@ Add project-specific patterns via `--exclude` or `exclude_patterns` in config.
 If a project was migrated between organizations or remotes, job-wrap identifies projects by their **repository name** (not the full remote URL). This means if you have clones of the same project at different remotes—e.g., `github.com/old-org/my-project` and `github.com/new-org/my-project`—they'll be treated as a single project, with commits deduplicated by commit hash.
 
 The output will list all local paths for that project, so you can see where each clone is located.
+
+### Excluding projects
+
+If you have clones of personal projects, third-party libraries, or other repos that shouldn't be included in your analysis, list them in your config:
+
+```yaml
+exclude_projects:
+  - azure-sdk-for-python
+  - kafka
+  - spark
+  - my-personal-project
+```
+
+Or pass them on the command line:
+
+```bash
+python analyze.py --exclude-project azure-sdk-for-python --exclude-project kafka
+```
+
+Excluded projects won't appear in the output or contribute to statistics.
 
 ## AI prompt usage
 

@@ -21,8 +21,15 @@ supplementary:
   # - ~/notes/standups.md
   # - ~/notes/achievements.txt
 
+# Project names to exclude from analysis (e.g., personal projects, third-party libraries)
+exclude_projects:
+  # - azure-sdk-for-python
+  # - kafka
+  # - spark
+
 # Additional regex patterns for filenames to exclude from line counts
 # (lock files and common generated files are already excluded by default)
 exclude_patterns:
   # - "^src/generated/"
   # - "\\.pb\\.ts$"
+

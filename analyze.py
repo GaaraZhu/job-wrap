@@ -270,6 +270,8 @@ def main():
                         help="Output mode (default: all)")
     parser.add_argument("--exclude", action="append", default=[], metavar="PATTERN",
                         help="Additional regex patterns for files to exclude from line counts")
+    parser.add_argument("--exclude-project", action="append", default=[], metavar="PROJECT",
+                        help="Project names to exclude from analysis (repeatable)")
     parser.add_argument("--output-dir", default="output", help="Directory to write output files (default: output/)")
     args = parser.parse_args()
 
@@ -291,6 +293,7 @@ def main():
     extra_emails = set(args.email) | set(config.get("extra_emails") or [])
     notes = args.note + (config.get("notes") or [])
     exclude_patterns = DEFAULT_EXCLUDE_PATTERNS + args.exclude + (config.get("exclude_patterns") or [])
+    exclude_projects = set(args.exclude_project) | set(config.get("exclude_projects") or [])
     supplementary_paths = config.get("supplementary") or []
     supplementary_text = load_supplementary(supplementary_paths)
     output_dir = Path(args.output_dir)
@@ -316,6 +319,11 @@ def main():
     # Analyze each project
     projects = []
     for remote_key, repos in project_groups.items():
+        # Skip excluded projects
+        if remote_key in exclude_projects:
+            print(f"  Excluding: {remote_key}", file=sys.stderr)
+            continue
+        
         # Collect author emails across all instances
         emails = set(extra_emails)
         for repo_path in repos:
