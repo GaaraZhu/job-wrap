@@ -203,8 +203,8 @@ def load_prompt_template(mode):
     return None
 
 
-def format_report(projects, total_commits, total_added, total_removed, earliest, latest,
-                  supplementary_paths, notes, mode):
+def format_analysis(projects, total_commits, total_added, total_removed, earliest, latest,
+                    supplementary_paths, notes):
     duration_days = (latest - earliest).days if earliest and latest else 0
     duration_months = duration_days // 30
 
@@ -245,11 +245,20 @@ def format_report(projects, total_commits, total_added, total_removed, earliest,
             for p in supplementary_paths:
                 lines.append(f"- {p}")
 
-    if mode != "raw":
-        template = load_prompt_template(mode)
-        if template:
-            lines.append(f"\n---\n\n## Your Task\n\n{template}")
+    return "\n".join(lines)
 
+
+def format_context(analysis_path, mode):
+    template = load_prompt_template(mode)
+    lines = [
+        f"Read `{analysis_path}` for the full contribution analysis, then complete the task below.",
+        "",
+        "---",
+        "",
+        "## Your Task",
+        "",
+        template or f"(no prompt template found for mode: {mode})",
+    ]
     return "\n".join(lines)
 
 
@@ -372,18 +381,19 @@ def main():
         print("No commits found. Check your directories and email addresses.", file=sys.stderr)
         sys.exit(1)
 
-    # Write output files
-    modes = ["cv", "farewell"] if args.mode == "all" else [args.mode]
-    for mode in modes:
-        report = format_report(
-            projects, total_commits, total_added, total_removed,
-            earliest, latest, supplementary_paths, notes, mode
-        )
-        if mode == "raw":
-            out_path = output_dir / "analysis.md"
-        else:
-            out_path = output_dir / f"{mode}-context.md"
-        out_path.write_text(report)
+    # Always write analysis.md
+    analysis_path = output_dir / "analysis.md"
+    analysis_path.write_text(format_analysis(
+        projects, total_commits, total_added, total_removed,
+        earliest, latest, supplementary_paths, notes,
+    ))
+    print(f"Written: {analysis_path}", file=sys.stderr)
+
+    # Write context files for cv/farewell modes
+    context_modes = ["cv", "farewell"] if args.mode == "all" else ([] if args.mode == "raw" else [args.mode])
+    for mode in context_modes:
+        out_path = output_dir / f"{mode}-context.md"
+        out_path.write_text(format_context(analysis_path, mode))
         print(f"Written: {out_path}", file=sys.stderr)
 
     print("Done.", file=sys.stderr)
