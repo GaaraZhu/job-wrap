@@ -262,7 +262,7 @@ def main():
                         help="Output mode (default: all)")
     parser.add_argument("--exclude", action="append", default=[], metavar="PATTERN",
                         help="Additional regex patterns for files to exclude from line counts")
-    parser.add_argument("--output-dir", default=".", help="Directory to write output files")
+    parser.add_argument("--output-dir", default="output", help="Directory to write output files (default: output/)")
     args = parser.parse_args()
 
     # Load config
@@ -277,10 +277,10 @@ def main():
         print("Error: no workspace directories specified. Pass as arguments or set workspace_dirs in config.yaml", file=sys.stderr)
         sys.exit(1)
 
-    extra_emails = set(args.email) | set(config.get("extra_emails", []))
-    notes = args.note + config.get("notes", [])
-    exclude_patterns = DEFAULT_EXCLUDE_PATTERNS + args.exclude + config.get("exclude_patterns", [])
-    supplementary_paths = config.get("supplementary", [])
+    extra_emails = set(args.email) | set(config.get("extra_emails") or [])
+    notes = args.note + (config.get("notes") or [])
+    exclude_patterns = DEFAULT_EXCLUDE_PATTERNS + args.exclude + (config.get("exclude_patterns") or [])
+    supplementary_paths = config.get("supplementary") or []
     supplementary_text = load_supplementary(supplementary_paths)
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)

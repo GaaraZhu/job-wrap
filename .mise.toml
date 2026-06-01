@@ -1,0 +1,6 @@
+[tools]
+python = "3.12"
+
+[tasks.install]
+description = "Install Python dependencies"
+run = "pip install pyyaml"
