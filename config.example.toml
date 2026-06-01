@@ -1,0 +1,40 @@
+# job-wrap configuration template
+# Copy this file to config.local.toml and fill in your personal details.
+# config.local.toml is gitignored — your personal config stays local.
+
+# Workspace directories to scan for git repos
+workspace_dirs = [
+  # "~/workspace",
+  # "~/work",
+]
+
+# Additional author emails beyond what git config detects per repo
+extra_emails = [
+  # "work@company.com",
+]
+
+# Freeform notes added to the "Additional Context" section of output
+notes = [
+  # "Led the platform migration project from Jan–Aug 2024",
+  # "Mentored two junior developers",
+]
+
+# Paths to supplementary text files (standup notes, achievement logs, etc.)
+supplementary = [
+  # "~/notes/standups.md",
+  # "~/notes/achievements.txt",
+]
+
+# Project names to exclude from analysis (e.g., personal projects, third-party libraries)
+exclude_projects = [
+  # "azure-sdk-for-python",
+  # "kafka",
+  # "spark",
+]
+
+# Additional regex patterns for filenames to exclude from line counts
+# (lock files and common generated files are already excluded by default)
+exclude_patterns = [
+  # "^src/generated/",
+  # "\\.pb\\.ts$",
+]

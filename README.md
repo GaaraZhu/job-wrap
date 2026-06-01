@@ -4,19 +4,15 @@ Analyze your git commit history across workspace directories to understand your 
 
 ## Setup
 
-Requires Python 3.12+. Install dependencies:
+Requires Python 3.12+ (no external dependencies).
+
+Copy `config.example.toml` to `config.local.toml` and fill in your details. The local file is gitignored so your personal config stays off the repo.
 
 ```bash
-pip install pyyaml
+cp config.example.toml config.local.toml
 ```
 
-Copy `config.example.yaml` to `config.local.yaml` and fill in your details. The local file is gitignored so your personal config stays off the repo.
-
-```bash
-cp config.example.yaml config.local.yaml
-```
-
-### Config file (`config.local.yaml`)
+### Config file (`config.local.toml`)
 
 | Field | Required | Description |
 |---|---|---|
@@ -29,29 +25,21 @@ cp config.example.yaml config.local.yaml
 
 Example:
 
-```yaml
-workspace_dirs:
-  - ~/workspace
-  - ~/work
+```toml
+workspace_dirs = ["~/workspace", "~/work"]
 
-extra_emails:
-  - work@company.com
-  - old-work@previouscompany.com
+extra_emails = ["work@company.com", "old-work@previouscompany.com"]
 
-notes:
-  - "Led the platform migration Jan–Aug 2024"
-  - "Mentored two junior developers"
+notes = [
+  "Led the platform migration Jan–Aug 2024",
+  "Mentored two junior developers",
+]
 
-supplementary:
-  - ~/notes/standups.md
-  - ~/notes/achievements.txt
+supplementary = ["~/notes/standups.md", "~/notes/achievements.txt"]
 
-exclude_projects:
-  - azure-sdk-for-python
-  - kafka
+exclude_projects = ["azure-sdk-for-python", "kafka"]
 
-exclude_patterns:
-  - "^src/generated/"
+exclude_patterns = ["^src/generated/"]
 ```
 
 ## Run
@@ -96,12 +84,8 @@ The output will list all local paths for that project, so you can see where each
 
 If you have clones of personal projects, third-party libraries, or other repos that shouldn't be included in your analysis, list them in your config:
 
-```yaml
-exclude_projects:
-  - azure-sdk-for-python
-  - kafka
-  - spark
-  - my-personal-project
+```toml
+exclude_projects = ["azure-sdk-for-python", "kafka", "spark", "my-personal-project"]
 ```
 
 Or pass them on the command line:

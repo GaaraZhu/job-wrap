@@ -16,11 +16,7 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
-try:
-    import yaml
-    HAS_YAML = True
-except ImportError:
-    HAS_YAML = False
+import tomllib
 
 # Files committed by convention but not meaningful contribution
 DEFAULT_EXCLUDE_PATTERNS = [
@@ -185,11 +181,8 @@ def get_commits_and_stats(repo_path, emails, exclude_patterns):
 
 
 def load_config(path):
-    if not HAS_YAML:
-        print("Warning: pyyaml not installed — config file support disabled. Run: pip install pyyaml", file=sys.stderr)
-        return {}
-    with open(path) as f:
-        return yaml.safe_load(f) or {}
+    with open(path, "rb") as f:
+        return tomllib.load(f)
 
 
 def load_supplementary(paths):
@@ -279,11 +272,11 @@ def main():
     config = {}
     if args.config:
         config = load_config(args.config)
-    elif Path("config.local.yaml").exists():
-        config = load_config("config.local.yaml")
-    elif Path("config.yaml").exists():
-        config = load_config("config.yaml")
-        print("Warning: config.yaml detected — consider renaming to config.local.yaml to keep it gitignored", file=sys.stderr)
+    elif Path("config.local.toml").exists():
+        config = load_config("config.local.toml")
+    elif Path("config.toml").exists():
+        config = load_config("config.toml")
+        print("Warning: config.toml detected — consider renaming to config.local.toml to keep it gitignored", file=sys.stderr)
 
     dirs = args.directories or config.get("workspace_dirs", [])
     if not dirs:
