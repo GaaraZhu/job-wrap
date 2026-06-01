@@ -18,4 +18,4 @@ Using the commit history, project list, and any additional context above, do the
 
 4. **Do not invent** facts not supported by the commit history or additional context. If something is unclear, make the bullet conservative or omit it.
 
-5. Output only the role entry and bullet points — no preamble, no explanation.
+5. Output only the role entry and bullet points — no preamble, no explanation. Also write the output to `output/cv.md` if you have filesystem access.

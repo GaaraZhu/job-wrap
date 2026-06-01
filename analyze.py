@@ -242,7 +242,44 @@ def format_analysis(projects, total_commits, total_added, total_removed, earlies
     return "\n".join(lines)
 
 
-def format_context(analysis_path, mode, supplementary_paths):
+IM_FORMATTING = {
+    "teams": (
+        "Microsoft Teams — plain paragraphs only; **bold** and [link text](url) render correctly; "
+        "do not use # headers, --- dividers, or bullet lists."
+    ),
+    "slack": (
+        "Slack — plain paragraphs; *bold* (single asterisks), _italic_, and <url|link text> for hyperlinks; "
+        "bullet lists with • work; do not use # headers or --- dividers."
+    ),
+    "email": (
+        "Email — full markdown is supported; headers, bullet lists, **bold**, *italic*, and [links](url) all render correctly."
+    ),
+    "plain": (
+        "Plain text — no markdown formatting at all; include hyperlinks as bare URLs."
+    ),
+}
+
+
+def format_contact(contact):
+    LABELS = {
+        "email": "Email",
+        "linkedin": "LinkedIn",
+        "github": "GitHub",
+        "phone": "Phone",
+    }
+    lines = []
+    for key, label in LABELS.items():
+        value = contact.get(key, "").strip()
+        if value:
+            lines.append(f"- **{label}:** {value}")
+    # Include any extra keys not in the standard set
+    for key, value in contact.items():
+        if key not in LABELS and isinstance(value, str) and value.strip():
+            lines.append(f"- **{key.capitalize()}:** {value.strip()}")
+    return lines
+
+
+def format_context(analysis_path, mode, supplementary_paths, contact=None, farewell_config=None):
     template = load_prompt_template(mode)
     lines = [
         f"Read `{analysis_path}` for the full contribution analysis, then complete the task below.",
@@ -251,6 +288,16 @@ def format_context(analysis_path, mode, supplementary_paths):
         lines.append("\n**Supplementary files** — read these for additional context:\n")
         for p in supplementary_paths:
             lines.append(f"- {p}")
+    if contact:
+        contact_lines = format_contact(contact)
+        if contact_lines:
+            lines.append("\n**Contact details** — use these in the output where relevant:\n")
+            lines.extend(contact_lines)
+    if mode == "farewell" and farewell_config:
+        im = farewell_config.get("im", "").strip().lower()
+        formatting_note = IM_FORMATTING.get(im)
+        if formatting_note:
+            lines.append(f"\n**Target platform:** {formatting_note}")
     lines += [
         "",
         "---",
@@ -299,6 +346,8 @@ def main():
     exclude_patterns = DEFAULT_EXCLUDE_PATTERNS + args.exclude + (config.get("exclude_patterns") or [])
     exclude_projects = set(args.exclude_project) | set(config.get("exclude_projects") or [])
     supplementary_paths = resolve_supplementary(config.get("supplementary") or [])
+    contact = config.get("contact") or {}
+    farewell_config = config.get("farewell") or {}
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -393,7 +442,7 @@ def main():
     context_modes = ["cv", "farewell"] if args.mode == "all" else ([] if args.mode == "raw" else [args.mode])
     for mode in context_modes:
         out_path = output_dir / f"{mode}-context.md"
-        out_path.write_text(format_context(analysis_path, mode, supplementary_paths))
+        out_path.write_text(format_context(analysis_path, mode, supplementary_paths, contact, farewell_config))
         print(f"Written: {out_path}", file=sys.stderr)
 
     print("Done.", file=sys.stderr)
