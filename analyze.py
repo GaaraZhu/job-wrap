@@ -278,7 +278,18 @@ def format_contact(contact):
     return lines
 
 
-def format_context(analysis_path, mode, supplementary_paths, contact=None):
+def format_role(role):
+    lines = []
+    if role.get("job_title", "").strip():
+        lines.append(f"- **Job Title:** {role['job_title'].strip()}")
+    if role.get("company", "").strip():
+        lines.append(f"- **Company:** {role['company'].strip()}")
+    if role.get("period", "").strip():
+        lines.append(f"- **Period:** {role['period'].strip()}")
+    return lines
+
+
+def format_context(analysis_path, mode, supplementary_paths, contact=None, role=None):
     template = load_prompt_template(mode)
     lines = [
         f"Read `{analysis_path}` for the full contribution analysis, then complete the task below.",
@@ -287,6 +298,11 @@ def format_context(analysis_path, mode, supplementary_paths, contact=None):
         lines.append("\n**Supplementary files** — read these for additional context:\n")
         for p in supplementary_paths:
             lines.append(f"- {p}")
+    if role and mode == "cv":
+        role_lines = format_role(role)
+        if role_lines:
+            lines.append("\n**Role details** — use these in the output:\n")
+            lines.extend(role_lines)
     if contact:
         contact_lines = format_contact(contact)
         if contact_lines:
@@ -335,6 +351,7 @@ def main():
     exclude_projects = set(config.get("exclude_projects") or [])
     supplementary_paths = resolve_supplementary(config.get("supplementary") or [])
     contact = config.get("contact") or {}
+    role = config.get("role") or {}
     output_dir = Path("output")
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -429,7 +446,7 @@ def main():
     context_modes = ["cv", "farewell"] if args.mode == "all" else ([] if args.mode == "raw" else [args.mode])
     for mode in context_modes:
         out_path = output_dir / f"{mode}-context.md"
-        out_path.write_text(format_context(analysis_path, mode, supplementary_paths, contact))
+        out_path.write_text(format_context(analysis_path, mode, supplementary_paths, contact, role))
         print(f"Written: {out_path}", file=sys.stderr)
 
     print("Done.", file=sys.stderr)

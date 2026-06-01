@@ -77,7 +77,7 @@ All other configuration (workspace directories, exclusions, notes, contact info,
 Open any AI coding assistant that can read files (Claude Code, Cursor, Copilot, opencode, etc.) in this folder, then point it at an output file:
 
 ```
-Read output/cv-context.md and do the task described at the bottom.
+Read output/farewell-context.md and do the task described at the bottom.
 ```
 
 The context file points the AI to `analysis.md` and any supplementary files, then gives it the task. Direct it to write results wherever you need — your CV file, a new draft, etc.

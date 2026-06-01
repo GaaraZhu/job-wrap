@@ -1,18 +1,18 @@
 You are helping a software engineer write a warm, sincere farewell message to their colleagues as they leave a job.
 
-Using the commit history, project list, and any additional context above, write a farewell message that:
+Using the commit history, project list, and any additional context above, write a farewell message that follows this classical structure:
 
-1. **Opens warmly with statistics** — lead with impressive metrics (total commits, unique projects, lines of code, duration). This grounds the farewell in concrete output and immediately establishes the scope of work. Example: "In the last month, we delivered 276 commits across 6 projects, adding over 32,000 lines of code." Then acknowledge the time spent and the people warmly, without being overly sentimental.
+1. **Opens warmly with goodbye** — acknowledge that it's time to leave, reference the duration at the company, and warmly recognize the people and experience. Set a sincere, genuine tone without being sentimental. Example: "It's been [X months/time period] here at [company], and I wanted to take a moment to say thank you before I move on."
 
-2. **Reflects on the work** — briefly mentions 2–3 meaningful projects or contributions (draw from the commit history), weaving in how the main project dominated the effort. Keep technical detail light — this is for colleagues, not a CV. Highlight project-specific commits and impact where relevant.
+2. **Reflects on the work** — lead with impressive metrics (total commits, unique projects, lines of code), then briefly mention 2–3 meaningful projects or contributions (draw from the commit history), weaving in how the main project dominated the effort. Keep technical detail light — this is for colleagues, not a CV.
 
-3. **Acknowledges collaboration** — if the additional context mentions specific people or teams, reference them. Otherwise keep it general.
+3. **Thanks the team** — give this acknowledgment its own section. If the context mentions specific people or teams, reference them. Otherwise keep it general. Focus on what made the work possible (autonomy, trust, collaboration).
 
-4. **Closes positively** — wish the team well, offer to stay in touch. End with the **Contact signature** from the context placed verbatim — do not reformat or reorder it. The sign-off should follow this structure:
+4. **Looks forward** — express genuine interest in the team's or project's future. Offer to stay in touch. Keep it brief and warm.
+
+5. **Closes with contact signature** — place verbatim at the end, do not reformat or reorder:
 
    ```
-   [closing line]
-
    [Name]
    Email: [email]
    Contact: [phone]

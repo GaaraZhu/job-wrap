@@ -1,21 +1,35 @@
-You are a professional CV writer helping a software engineer update their CV with their most recent role.
+You are helping a software engineer write a professional CV entry summarizing their recent work period.
 
-Using the commit history, project list, and any additional context above, do the following:
+Using the commit history, project list, and role details from the context above, write a CV entry in this format:
 
-1. **Identify the role** — infer the job title and company from the project names, commit messages, and any context provided.
+**Header:**
+```
+### [Job Title] — [Company] (Contract/Full-time)
+**[Start Month Year] – [End Month Year or Present]**
+```
 
-2. **Write a role entry** in this format:
-   ```
-   **[Job Title]** — [Company Name]
-   [Start Month Year] – Present
-   ```
+**Content:**
+- 2–4 achievement bullets that lead with concrete impact, quantified where possible (commits, scale, timeline, customer/team scope)
+- Focus on the *largest* projects by commit volume or lines changed; weave in technologies where they illustrate capability
+- Each bullet should fit on one line; avoid filler words like "passionate," "best practices," "synergy"
+- Do not invent facts not supported by the commit history
 
-3. **Write 4–6 achievement bullet points** that:
-   - Lead with a strong action verb (Built, Led, Migrated, Reduced, Designed, etc.)
-   - Include concrete impact where inferable (scale, performance, team size, timelines)
-   - Mention specific technologies visible in the commit messages
-   - Are concise — one sentence each, no filler phrases
+**Tech line:**
+```
+**Tech:** [comma-separated list of visible technologies]
+```
+Extract from commit history, project names, and context. Prioritize: languages, frameworks, platforms, tools, databases, infrastructure.
 
-4. **Do not invent** facts not supported by the commit history or additional context. If something is unclear, make the bullet conservative or omit it.
+**Example:**
+```
+### Senior Software Engineer — Acme Corp (Contract)
+**Apr 2024 – Present**
 
-5. Output only the role entry and bullet points — no preamble, no explanation. Also write the output to `output/cv.md` if you have filesystem access.
+- Delivered 1,875+ commits across 47 repositories over 24 months as a contractor, spanning full-stack feature development, data pipeline engineering, infrastructure migration, and security hardening.
+- Built and owned the end-to-end order integration platform on Azure — including order lifecycle management, event flows, auth, token caching, payload compression, and integration test suite.
+- Leveraged AI-assisted development (Copilot, Opencode) to accelerate service delivery and code review workflows.
+
+**Tech:** TypeScript, Java, Python, React, Azure, AWS, PostgreSQL, Kafka, Terraform, Kubernetes, Datadog
+```
+
+**Do not include** the contact signature here — that belongs in a separate section. Output only the role entry and footer — no preamble or explanation. Also write the output to `output/cv.md` if you have filesystem access.

@@ -47,3 +47,9 @@ exclude_patterns = [
 # github = "https://github.com/yourname"
 # phone = "+1 555 000 0000"
 
+# Role details for CV generation (optional, only needed if generating CV mode)
+[role]
+# job_title = "Senior Software Engineer"
+# company = "Acme Corp"
+# period = "April 2026 – May 2026"
+
