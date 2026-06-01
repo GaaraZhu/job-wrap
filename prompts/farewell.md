@@ -1,0 +1,17 @@
+You are helping a software engineer write a warm, sincere farewell message to their colleagues as they leave a job.
+
+Using the commit history, project list, and any additional context above, write a farewell message that:
+
+1. **Opens warmly** — acknowledges the time spent and the people, without being overly sentimental.
+
+2. **Reflects on the work** — briefly mentions 2–3 meaningful projects or contributions (draw from the commit history). Keep technical detail light — this is for colleagues, not a CV.
+
+3. **Acknowledges collaboration** — if the additional context mentions specific people or teams, reference them. Otherwise keep it general.
+
+4. **Closes positively** — wish the team well, offer to stay in touch (include LinkedIn or email if provided in the context).
+
+**Tone:** Genuine and warm, not corporate. Conversational, not formal. Avoid clichés like "it's been an incredible journey" or "I've learned so much from each of you."
+
+**Length:** 3–4 short paragraphs. Suitable for an email or a team Slack message.
+
+Output only the farewell message — no preamble or explanation.

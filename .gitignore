@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+cv-context.md
+farewell-context.md
+analysis.md
