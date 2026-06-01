@@ -3,8 +3,7 @@
 job-wrap: Analyze git commit history across workspace directories.
 
 Usage:
-  python analyze.py [dirs...] [--config config.yaml] [--email work@co.com] [--note "extra context"]
-                   [--mode cv|farewell|all|raw]
+  python analyze.py [--config config.toml] [--mode cv|farewell|all|raw]
 """
 
 import argparse
@@ -310,19 +309,9 @@ def format_context(analysis_path, mode, supplementary_paths, contact=None):
 
 def main():
     parser = argparse.ArgumentParser(description="Analyze git contribution history across workspaces")
-    parser.add_argument("directories", nargs="*", help="Workspace directories to scan")
-    parser.add_argument("--config", help="Path to config.yaml")
-    parser.add_argument("--email", action="append", default=[], metavar="EMAIL",
-                        help="Additional author email to include (repeatable)")
-    parser.add_argument("--note", action="append", default=[], metavar="TEXT",
-                        help="Extra context to include in output (repeatable)")
+    parser.add_argument("--config", help="Path to config file (default: config.local.toml or config.toml)")
     parser.add_argument("--mode", choices=["cv", "farewell", "all", "raw"], default="all",
-                        help="Output mode (default: all)")
-    parser.add_argument("--exclude", action="append", default=[], metavar="PATTERN",
-                        help="Additional regex patterns for files to exclude from line counts")
-    parser.add_argument("--exclude-project", action="append", default=[], metavar="PROJECT",
-                        help="Project names to exclude from analysis (repeatable)")
-    parser.add_argument("--output-dir", default="output", help="Directory to write output files (default: output/)")
+                        help="Output mode: cv | farewell | all | raw (default: all)")
     args = parser.parse_args()
 
     # Load config
@@ -335,18 +324,18 @@ def main():
         config = load_config("config.toml")
         print("Warning: config.toml detected — consider renaming to config.local.toml to keep it gitignored", file=sys.stderr)
 
-    dirs = args.directories or config.get("workspace_dirs", [])
+    dirs = config.get("workspace_dirs", [])
     if not dirs:
-        print("Error: no workspace directories specified. Pass as arguments or set workspace_dirs in config.yaml", file=sys.stderr)
+        print("Error: workspace_dirs not set in config file", file=sys.stderr)
         sys.exit(1)
 
-    extra_emails = set(args.email) | set(config.get("extra_emails") or [])
-    notes = args.note + (config.get("notes") or [])
-    exclude_patterns = DEFAULT_EXCLUDE_PATTERNS + args.exclude + (config.get("exclude_patterns") or [])
-    exclude_projects = set(args.exclude_project) | set(config.get("exclude_projects") or [])
+    extra_emails = set(config.get("extra_emails") or [])
+    notes = config.get("notes") or []
+    exclude_patterns = DEFAULT_EXCLUDE_PATTERNS + (config.get("exclude_patterns") or [])
+    exclude_projects = set(config.get("exclude_projects") or [])
     supplementary_paths = resolve_supplementary(config.get("supplementary") or [])
     contact = config.get("contact") or {}
-    output_dir = Path(args.output_dir)
+    output_dir = Path("output")
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Discover repos

@@ -56,46 +56,21 @@ This writes to `output/`:
 ### Options
 
 ```
-python3 analyze.py [dirs...] [options]
+python analyze.py [--config CONFIG] [--mode MODE]
 
-  --config PATH              Config file (default: config.local.toml if present)
-  --email EMAIL              Additional author email (repeatable)
-  --note TEXT                Extra context to include in output (repeatable)
-  --mode MODE                cv | farewell | all | raw  (default: all)
-  --exclude PATTERN          Extra regex pattern for files to exclude from line counts
-  --exclude-project PROJECT  Project name to exclude from analysis (repeatable)
-  --output-dir DIR           Where to write output files (default: output/)
+  --config CONFIG     Config file (default: config.local.toml if present, else config.toml)
+  --mode MODE         cv | farewell | all | raw  (default: all)
 ```
 
-### What gets excluded from line counts
+All other configuration (workspace directories, exclusions, notes, contact info, etc.) goes in your config file.
 
-Lock files and generated files committed by convention are excluded:
-`package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`, `go.sum`, `Gemfile.lock`,
-`poetry.lock`, `composer.lock`, `Cargo.lock`, `*.snap`, `*.pb.go`, `*_pb2.py`, etc.
+### Counting methodology
 
-Add project-specific patterns via `--exclude` or `exclude_patterns` in config.
-
-### Handling migrated projects
-
-If a project was migrated between organizations or remotes, job-wrap identifies projects by their **repository name** (not the full remote URL). This means if you have clones of the same project at different remotes—e.g., `github.com/old-org/my-project` and `github.com/new-org/my-project`—they'll be treated as a single project, with commits deduplicated by commit hash.
-
-The output will list all local paths for that project, so you can see where each clone is located.
-
-### Excluding projects
-
-If you have clones of personal projects, third-party libraries, or other repos that shouldn't be included in your analysis, list them in your config:
-
-```toml
-exclude_projects = ["azure-sdk-for-python", "kafka", "spark", "my-personal-project"]
-```
-
-Or pass them on the command line:
-
-```bash
-python analyze.py --exclude-project azure-sdk-for-python --exclude-project kafka
-```
-
-Excluded projects won't appear in the output or contribute to statistics.
+| Item | Included | Excluded |
+|------|----------|----------|
+| **Project** | <ul><li>Git repositories found in `workspace_dirs`</li><li>Identified by repository name (not full URL)</li><li>Deduplicated across migrations</li></ul> | <ul><li>Repositories listed in `exclude_projects` config</li></ul> |
+| **Commit** | <ul><li>Commits matching configured author emails (auto-detected from `git config user.email` + `extra_emails`)</li><li>Deduplicated by commit hash</li></ul> | <ul><li>Merge commits</li><li>Commits from excluded projects</li></ul> |
+| **Lines of code** | <ul><li>All file changes in included commits</li></ul> | <ul><li>Lock files: `package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`, `go.sum`, `Gemfile.lock`, `poetry.lock`, `composer.lock`, `Cargo.lock`</li><li>Generated files: `*.snap`, `*.pb.go`, `*_pb2.py`, `*_pb2_grpc.py`, `.terraform.lock.hcl`</li><li>Custom patterns via `exclude_patterns` config</li></ul> |
 
 ## AI prompt usage
 
