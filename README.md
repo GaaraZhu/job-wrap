@@ -6,10 +6,10 @@ Analyze your git commit history across workspace directories to understand your 
 
 **Step 1 — Configure**
 
-Copy `config.yaml` to `config.local.yaml` and fill in your details. The local file is gitignored so your personal config stays off the repo.
+Copy `config.example.yaml` to `config.local.yaml` and fill in your details. The local file is gitignored so your personal config stays off the repo.
 
 ```bash
-cp config.yaml config.local.yaml
+cp config.example.yaml config.local.yaml
 ```
 
 **Step 2 — Generate output files**

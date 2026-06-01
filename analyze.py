@@ -273,6 +273,7 @@ def main():
         config = load_config("config.local.yaml")
     elif Path("config.yaml").exists():
         config = load_config("config.yaml")
+        print("Warning: config.yaml detected — consider renaming to config.local.yaml to keep it gitignored", file=sys.stderr)
 
     dirs = args.directories or config.get("workspace_dirs", [])
     if not dirs:
