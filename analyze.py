@@ -185,15 +185,15 @@ def load_config(path):
         return tomllib.load(f)
 
 
-def load_supplementary(paths):
-    sections = []
+def resolve_supplementary(paths):
+    resolved = []
     for p in paths:
-        p = Path(p).expanduser()
+        p = Path(p).expanduser().resolve()
         if p.exists():
-            sections.append(f"### {p.name}\n\n{p.read_text().strip()}")
+            resolved.append(str(p))
         else:
             print(f"  Warning: supplementary file not found: {p}", file=sys.stderr)
-    return "\n\n".join(sections)
+    return resolved
 
 
 def load_prompt_template(mode):
@@ -204,7 +204,7 @@ def load_prompt_template(mode):
 
 
 def format_report(projects, total_commits, total_added, total_removed, earliest, latest,
-                  supplementary_text, notes, mode):
+                  supplementary_paths, notes, mode):
     duration_days = (latest - earliest).days if earliest and latest else 0
     duration_months = duration_days // 30
 
@@ -235,13 +235,15 @@ def format_report(projects, total_commits, total_added, total_removed, earliest,
             lines.append(f"- `{c['date_str']}` {c['subject']}")
         lines.append("")
 
-    if supplementary_text or notes:
+    if supplementary_paths or notes:
         lines.append("## Additional Context\n")
         if notes:
             for note in notes:
                 lines.append(f"> {note}\n")
-        if supplementary_text:
-            lines.append(supplementary_text)
+        if supplementary_paths:
+            lines.append("**Supplementary files** — read these for additional context:\n")
+            for p in supplementary_paths:
+                lines.append(f"- {p}")
 
     if mode != "raw":
         template = load_prompt_template(mode)
@@ -287,8 +289,7 @@ def main():
     notes = args.note + (config.get("notes") or [])
     exclude_patterns = DEFAULT_EXCLUDE_PATTERNS + args.exclude + (config.get("exclude_patterns") or [])
     exclude_projects = set(args.exclude_project) | set(config.get("exclude_projects") or [])
-    supplementary_paths = config.get("supplementary") or []
-    supplementary_text = load_supplementary(supplementary_paths)
+    supplementary_paths = resolve_supplementary(config.get("supplementary") or [])
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -376,7 +377,7 @@ def main():
     for mode in modes:
         report = format_report(
             projects, total_commits, total_added, total_removed,
-            earliest, latest, supplementary_text, notes, mode
+            earliest, latest, supplementary_paths, notes, mode
         )
         if mode == "raw":
             out_path = output_dir / "analysis.md"
