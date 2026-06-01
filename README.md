@@ -4,9 +4,10 @@ Analyze your git commit history across workspace directories to understand your 
 
 ## Setup
 
+Requires Python 3.12+. Install dependencies:
+
 ```bash
-mise install python                        # installs Python 3.12
-mise exec -- python -m pip install pyyaml  # installs pyyaml into that Python
+pip install pyyaml
 ```
 
 Copy `config.example.yaml` to `config.local.yaml` and fill in your details. The local file is gitignored so your personal config stays off the repo.
@@ -31,7 +32,7 @@ notes:
 ## Run
 
 ```bash
-mise exec -- python analyze.py
+python analyze.py
 ```
 
 This writes to `output/`:
