@@ -215,7 +215,7 @@ def format_analysis(projects, total_commits, total_added, total_removed, earlies
     lines.append(f"- **Start:** {earliest.strftime('%B %Y') if earliest else 'N/A'}")
     lines.append(f"- **Duration:** {duration_months} months ({duration_days} days)")
     lines.append(f"- **Unique projects:** {len(projects)}")
-    lines.append(f"- **Total commits:** {total_commits}")
+    lines.append(f"- **Total commits:** {total_commits}  _(merge commits excluded)_")
     lines.append(f"- **Lines added:** {total_added:,}  _(lock files and generated code excluded)_")
     lines.append(f"- **Lines removed:** {total_removed:,}")
     lines.append(f"- **Net change:** {'+' if total_added - total_removed >= 0 else ''}{total_added - total_removed:,}")
