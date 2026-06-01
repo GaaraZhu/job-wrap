@@ -41,14 +41,9 @@ exclude_patterns = [
 
 # Personal contact details included in AI-generated output (e.g. farewell letter, CV)
 [contact]
+# name = "Jane Smith"
 # email = "you@example.com"
 # linkedin = "https://linkedin.com/in/yourname"
 # github = "https://github.com/yourname"
 # phone = "+1 555 000 0000"
 
-# Farewell letter settings
-[farewell]
-# Instant messaging platform the farewell will be sent on.
-# Controls formatting constraints passed to the AI.
-# Options: "teams", "slack", "email", "plain"
-# im = "teams"

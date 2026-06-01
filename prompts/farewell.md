@@ -2,19 +2,29 @@ You are helping a software engineer write a warm, sincere farewell message to th
 
 Using the commit history, project list, and any additional context above, write a farewell message that:
 
-1. **Opens warmly** — acknowledges the time spent and the people, without being overly sentimental.
+1. **Opens warmly with statistics** — lead with impressive metrics (total commits, unique projects, lines of code, duration). This grounds the farewell in concrete output and immediately establishes the scope of work. Example: "In the last month, we delivered 276 commits across 6 projects, adding over 32,000 lines of code." Then acknowledge the time spent and the people warmly, without being overly sentimental.
 
-2. **Reflects on the work** — briefly mentions 2–3 meaningful projects or contributions (draw from the commit history). Keep technical detail light — this is for colleagues, not a CV.
+2. **Reflects on the work** — briefly mentions 2–3 meaningful projects or contributions (draw from the commit history), weaving in how the main project dominated the effort. Keep technical detail light — this is for colleagues, not a CV. Highlight project-specific commits and impact where relevant.
 
 3. **Acknowledges collaboration** — if the additional context mentions specific people or teams, reference them. Otherwise keep it general.
 
-4. **Closes positively** — wish the team well, offer to stay in touch (include LinkedIn or email if provided in the context).
+4. **Closes positively** — wish the team well, offer to stay in touch. End with the **Contact signature** from the context placed verbatim — do not reformat or reorder it. The sign-off should follow this structure:
+
+   ```
+   [closing line]
+
+   [Name]
+   Email: [email]
+   Contact: [phone]
+   LinkedIn: [link]
+   GitHub: [link]
+   ```
 
 **Tone:** Genuine and warm, not corporate. Conversational, not formal. Avoid clichés like "it's been an incredible journey" or "I've learned so much from each of you."
 
 **Length:** 3–4 short paragraphs.
 
-**Formatting:** Follow the formatting constraints for the **Target platform** specified in the context above. If no platform is specified, use plain paragraphs with no markdown.
+**Formatting:** Use standard markdown — **bold**, *italic*, and [link text](url) for hyperlinks. Plain paragraphs only; no # headers or --- dividers.
 
 End with a single footer line, separated by a blank line:
 
