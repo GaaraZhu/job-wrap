@@ -6,7 +6,7 @@ Analyze your git commit history across workspace directories to understand your 
 
 ```bash
 mise install python  # installs Python 3.12
-mise run install     # installs pyyaml
+pip install pyyaml
 ```
 
 Copy `config.example.yaml` to `config.local.yaml` and fill in your details. The local file is gitignored so your personal config stays off the repo.
