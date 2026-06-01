@@ -18,15 +18,40 @@ cp config.example.yaml config.local.yaml
 
 ### Config file (`config.local.yaml`)
 
+| Field | Required | Description |
+|---|---|---|
+| `workspace_dirs` | Yes | Directories to scan recursively for git repos |
+| `extra_emails` | Recommended | Work emails beyond what `git config user.email` returns per repo — ensures all your commits are captured |
+| `notes` | Optional | Freeform context injected into the AI prompt (achievements, scope, tenure dates) |
+| `supplementary` | Optional | Paths to text files (standup logs, achievement notes) appended as extra context |
+| `exclude_projects` | Optional | Repo names to skip (personal projects, third-party libraries you have cloned) |
+| `exclude_patterns` | Optional | Extra regex patterns for filenames to exclude from line counts |
+
+Example:
+
 ```yaml
 workspace_dirs:
   - ~/workspace
+  - ~/work
+
 extra_emails:
   - work@company.com
-supplementary:
-  - ~/notes/standups.md
+  - old-work@previouscompany.com
+
 notes:
   - "Led the platform migration Jan–Aug 2024"
+  - "Mentored two junior developers"
+
+supplementary:
+  - ~/notes/standups.md
+  - ~/notes/achievements.txt
+
+exclude_projects:
+  - azure-sdk-for-python
+  - kafka
+
+exclude_patterns:
+  - "^src/generated/"
 ```
 
 ## Run
