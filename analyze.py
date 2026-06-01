@@ -78,6 +78,8 @@ def normalize_remote(url):
 
 def get_repo_remote_key(repo_path):
     output = run(["git", "remote", "-v"], cwd=repo_path)
+    
+    # Try to find 'origin' remote first
     for line in output.splitlines():
         if "(fetch)" not in line:
             continue
@@ -85,14 +87,20 @@ def get_repo_remote_key(repo_path):
         if len(parts) >= 2:
             name, url = parts[0], parts[1]
             if name == "origin":
-                return normalize_remote(url)
+                normalized = normalize_remote(url)
+                # Extract just the repo name (last part) to handle migrations
+                # e.g., github.com/jarden-digital/investcloud-function-apps -> investcloud-function-apps
+                return normalized.split("/")[-1]
+    
     # Fall back to first remote found
     for line in output.splitlines():
         if "(fetch)" not in line:
             continue
         parts = line.split()
         if len(parts) >= 2:
-            return normalize_remote(parts[1])
+            normalized = normalize_remote(parts[1])
+            return normalized.split("/")[-1]
+    
     return f"local:{repo_path.name}"
 
 

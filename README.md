@@ -60,6 +60,12 @@ Lock files and generated files committed by convention are excluded:
 
 Add project-specific patterns via `--exclude` or `exclude_patterns` in config.
 
+### Handling migrated projects
+
+If a project was migrated between organizations or remotes, job-wrap identifies projects by their **repository name** (not the full remote URL). This means if you have clones of the same project at different remotes—e.g., `github.com/old-org/my-project` and `github.com/new-org/my-project`—they'll be treated as a single project, with commits deduplicated by commit hash.
+
+The output will list all local paths for that project, so you can see where each clone is located.
+
 ## AI prompt usage
 
 Open an AI coding assistant in this folder:
